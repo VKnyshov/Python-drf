@@ -1,22 +1,35 @@
 from django_filters import rest_framework as filters
 
 from apps.pizza.models import DaysChoices
+from apps.pizza.serialaizers import PizzaSerializer
 
 
 class PizzaFilter(filters.FilterSet):
-    lt = filters.NumberFilter(field_name='price', lookup_expr='lt')
-    range = filters.RangeFilter(field_name='price') # range_min=2$range_max=100
-    price_in = filters.BaseInFilter(field_name='price') # prise_in=30,25,2000
-    day = filters.ChoiceFilter('day',choices=DaysChoices.choices)
-    order = filters.OrderingFilter(
-        fields=(
-            'id',
-            'name',
-            ('price', 'asd') #якщо треба переназвати
+    # Фільтри для числових полів (price, size)
+    price_lt = filters.NumberFilter(field_name='price', lookup_expr='lt')  # Менше
+    price_lte = filters.NumberFilter(field_name='price', lookup_expr='lte')  # Менше-рівне
+    price_gt = filters.NumberFilter(field_name='price', lookup_expr='gt')  # Більше
+    price_gte = filters.NumberFilter(field_name='price', lookup_expr='gte')  # Більше-рівне
 
+    size_lt = filters.NumberFilter(field_name='size', lookup_expr='lt')  # Менше
+    size_lte = filters.NumberFilter(field_name='size', lookup_expr='lte')  # Менше-рівне
+    size_gt = filters.NumberFilter(field_name='size', lookup_expr='gt')  # Більше
+    size_gte = filters.NumberFilter(field_name='size', lookup_expr='gte')  # Більше-рівне
+
+    # Фільтри для текстових полів (name, day)
+    name_startswith = filters.CharFilter(field_name='name', lookup_expr='startswith')  # Починається з
+    name_endswith = filters.CharFilter(field_name='name', lookup_expr='endswith')  # Закінчується на
+    name_contains = filters.CharFilter(field_name='name', lookup_expr='icontains')  # Містить у собі
+
+    day_startswith = filters.CharFilter(field_name='day', lookup_expr='startswith')  # Починається з
+    day_endswith = filters.CharFilter(field_name='day', lookup_expr='endswith')  # Закінчується на
+    day_contains = filters.CharFilter(field_name='day', lookup_expr='icontains')  # Містить у собі
+
+    # Сортування для будь-якого поля
+    order = filters.OrderingFilter(
+        fields=PizzaSerializer.Meta.fields
         )
-    )# order= name asc
-    # order= -name desc
+
 
 
 
