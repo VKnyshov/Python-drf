@@ -1,4 +1,4 @@
-from rest_framework.generics import GenericAPIView, ListAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import ListAPIView, ListCreateAPIView, GenericAPIView, RetrieveUpdateDestroyAPIView
 
 from apps.pizza.filter import PizzaFilter
 from apps.pizza.models import PizzaModel
