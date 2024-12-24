@@ -5,6 +5,7 @@ from core.enums.regex_enum import RegexEnum
 from core.models import BaseModel
 
 from apps.pizza_shop.models import PizzaShopModel
+from apps.pizza.managers import PizzaManager
 
 
 class DaysChoices(models.TextChoices):
@@ -15,6 +16,9 @@ class DaysChoices(models.TextChoices):
     FRIDAY = 'Friday'
     SATURDAY = 'Saturday'
     SUNDAY = 'Sunday'
+
+
+
 
 class PizzaModel(BaseModel):
     class Meta:
@@ -27,7 +31,4 @@ class PizzaModel(BaseModel):
     day = models.CharField(max_length=9, choices=DaysChoices.choices)
     pizza_shop = models.ForeignKey(PizzaShopModel, on_delete=models.CASCADE, related_name='pizzas')
 
-    # name = models.CharField(max_length=20,blank=True)
-    # size = models.IntegerField(default=25)
-    # price = models.FloatField(null=true)
-    # pizza_shop = models.ForeignKey(PizzaShopModel, on_delete=models.CASCADE, related_name='pizzas')
+    objects = PizzaManager()

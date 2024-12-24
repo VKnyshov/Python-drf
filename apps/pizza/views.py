@@ -3,12 +3,15 @@ from rest_framework.generics import ListAPIView, ListCreateAPIView, GenericAPIVi
 from apps.pizza.filter import PizzaFilter
 from apps.pizza.models import PizzaModel
 from apps.pizza.serialaizers import PizzaSerializer
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser, AllowAny
 
 
 class PizzaListCreateView(ListAPIView):
     serializer_class = PizzaSerializer
+    # queryset = PizzaModel.objects.less_than_size(30)
     queryset = PizzaModel.objects.all()
     filterset_class = PizzaFilter
+    permission_classes = (IsAuthenticated,)
     # pagination_class = None #відключає пагінацію
 
     # def get_queryset(self):
