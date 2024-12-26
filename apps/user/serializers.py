@@ -47,7 +47,7 @@ class UserSerializer(serializers.ModelSerializer):
 class UserUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserModel
-        fields = ('is_active', 'is_staff')  # Поля, которые можно редактировать
+        fields = ('is_active', 'is_staff')  # Поля, які можна редагувати
         extra_kwargs = {
             'is_active': {'required': True},
             'is_staff': {'required': True}
