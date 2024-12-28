@@ -11,7 +11,8 @@ class PizzaListCreateView(ListAPIView):
     # queryset = PizzaModel.objects.less_than_size(30)
     queryset = PizzaModel.objects.all()
     filterset_class = PizzaFilter
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
+    # permission_classes = (IsAuthenticated,)
     # pagination_class = None #відключає пагінацію
 
     # def get_queryset(self):
