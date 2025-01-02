@@ -2,7 +2,9 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
 from apps.user.models import ProfileModel
-
+from core.services.email_service import EmailService
+from core.services.jwt_service import JWTService
+from django.db.transaction import atomic
 UserModel = get_user_model()
 
 class ProfileSerializer(serializers.ModelSerializer):
@@ -36,9 +38,10 @@ class UserSerializer(serializers.ModelSerializer):
         )
         read_only_fields = ('id', 'is_active', 'is_staff', 'is_superuser', 'last_login', 'created_at', 'updated_at')
         extra_kwargs = {'password': {'write_only': True}}
-
+    @atomic
     def create(self, validated_data:dict):
         profile = validated_data.pop('profile')
         user = UserModel.objects.create_user(**validated_data)
         ProfileModel.objects.create(**profile, user=user)
+        EmailService.register(user)
         return user
