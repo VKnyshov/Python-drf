@@ -3,11 +3,15 @@ from django.template.loader import get_template
 from django.core.mail import EmailMultiAlternatives
 
 from core.services.jwt_service import JWTService, ActivateToken, RecoveryToken
+from configs.celery import app
 
+from django.contrib.auth import get_user_model
+UserModel = get_user_model()
 
 class EmailService:
-    @classmethod
-    def __send_email(cls, to: str, template_name: str, context: dict, subject: str) -> None:
+    @staticmethod
+    @app.task
+    def __send_email(to: str, template_name: str, context: dict, subject: str) -> None:
         template = get_template(template_name)
         html_content = template.render(context)
         msg = EmailMultiAlternatives(
@@ -25,7 +29,7 @@ class EmailService:
         # Формуємо правильний URL з токеном
         url = f'http://localhost/activate/{activation_token}'
         # Надсилаємо лист з посиланням
-        cls.__send_email(
+        cls.__send_email.delay(
             to=user.email,
             template_name='register.html',
             context={'name': user.profile.name, 'url': url},
@@ -41,3 +45,15 @@ class EmailService:
             context={'url': url},
             subject="Recovery"
         )
+
+    @staticmethod
+    @app.task
+    def spam():
+        for user in UserModel.objects.all():
+            # EmailService.__send_email(
+            EmailService.__send_email.delay(
+                to=user.email,
+                template_name='spam.html',
+                context={},
+                subject='SPAM',
+            )
