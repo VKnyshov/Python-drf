@@ -1,5 +1,3 @@
-from datetime import timedelta
-
 from rest_framework_simplejwt.tokens import BlacklistMixin, Token
 from typing import Type
 from rest_framework.generics import get_object_or_404
@@ -24,6 +22,10 @@ class ActivateToken(ActionToken):
 class RecoveryToken(ActionToken):
     token_type = ActionTokenEnum.RECOVERY.token_type
     lifetime = ActionTokenEnum.RECOVERY.lifetime
+
+class SocketToken(ActionToken):
+    token_type = ActionTokenEnum.SOCKET.token_type
+    lifetime = ActionTokenEnum.SOCKET.lifetime
 
 class JWTService:
     @staticmethod
