@@ -24,7 +24,7 @@ class DaysChoices(models.TextChoices):
 class PizzaModel(BaseModel):
     class Meta:
         db_table = 'pizzas'
-        # ordering = ('-id',) #якщо треба жорстко вказати з чого сортувати
+        ordering = ('-id',) #якщо треба жорстко вказати з чого сортувати
 
     name = models.CharField(max_length=20, validators=[V.RegexValidator(RegexEnum.NAME.pattern, RegexEnum.NAME.msg)])
     size = models.IntegerField(validators=[V.MinValueValidator(1),V.MaxValueValidator(100)])

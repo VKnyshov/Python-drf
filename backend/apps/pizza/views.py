@@ -6,7 +6,7 @@ from apps.pizza.serialaizers import PizzaSerializer, PizzaPhotoSerializer
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser, AllowAny
 
 
-class PizzaListCreateView(ListAPIView):
+class PizzaListCreateView(ListCreateAPIView):
     serializer_class = PizzaSerializer
     # queryset = PizzaModel.objects.less_than_size(30)
     queryset = PizzaModel.objects.all()
