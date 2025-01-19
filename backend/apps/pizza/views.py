@@ -1,14 +1,23 @@
-from rest_framework.generics import RetrieveUpdateDestroyAPIView, UpdateAPIView, ListAPIView, ListCreateAPIView, GenericAPIView, RetrieveUpdateDestroyAPIView
-
+from rest_framework.generics import RetrieveUpdateDestroyAPIView, UpdateAPIView, ListAPIView, ListCreateAPIView, \
+    GenericAPIView, RetrieveUpdateDestroyAPIView
+from django.utils.decorators import method_decorator
 from apps.pizza.filter import PizzaFilter
 from apps.pizza.models import PizzaModel
-from apps.pizza.serialaizers import PizzaSerializer, PizzaPhotoSerializer
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser, AllowAny
+from apps.pizza.serialaizers import PizzaSerializer, PizzaPhotoSerializer, PizzaResponseSerializer
+from rest_framework.permissions import AllowAny
+from drf_yasg.utils import swagger_auto_schema
 
+
+@method_decorator(
+    name='get',
+    decorator=swagger_auto_schema(
+        security=[],
+        operation_description='hohoho',
+        responses={200: PizzaResponseSerializer()},
+        operation_summary='get all pizzas'))
 
 class PizzaListCreateView(ListCreateAPIView):
     serializer_class = PizzaSerializer
-    # queryset = PizzaModel.objects.less_than_size(30)
     queryset = PizzaModel.objects.all()
     filterset_class = PizzaFilter
     permission_classes = (AllowAny,)
@@ -24,6 +33,7 @@ class PizzaRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     queryset = PizzaModel.objects.all()
     # http_method_names = ['get', 'put', 'delete'] #можемо самі обирати методи які потрібні
 
+
 class PizzaAddPhotoView(UpdateAPIView):
     serializer_class = PizzaPhotoSerializer
     queryset = PizzaModel.objects.all()
@@ -34,5 +44,3 @@ class PizzaAddPhotoView(UpdateAPIView):
         pizza = self.get_object()
         pizza.photo.delete()
         super().perform_update(serializer)
-
-

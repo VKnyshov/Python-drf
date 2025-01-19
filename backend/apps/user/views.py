@@ -19,7 +19,9 @@ class UserListCreateView(ListCreateAPIView):
 ###########################################################################
 
 class BlockUserView(GenericAPIView):
-    # queryset = UserModel.objects.all()
+    def get_serializer(self):
+        return None
+
     def get_queryset(self):
         return UserModel.objects.all().exclude(id=self.request.user.id) #можна заблокувати всіх окрім залогіненого
 
@@ -34,7 +36,10 @@ class BlockUserView(GenericAPIView):
 
 
 class UnBlockUserView(GenericAPIView):
-    # queryset = UserModel.objects.all()
+
+    def get_serializer(self):
+        return None
+
     def get_queryset(self):
         return UserModel.objects.exclude(id=self.request.user.id) #можна заблокувати всіх окрім залогіненого
 
@@ -49,7 +54,9 @@ class UnBlockUserView(GenericAPIView):
 
 
 class UserToAdminView(GenericAPIView):
-    # queryset = UserModel.objects.all()
+    def get_serializer(self):
+        return None
+
     def get_queryset(self):
         return UserModel.objects.exclude(id=self.request.user.id) #можна заблокувати всіх окрім залогіненого
 
@@ -64,6 +71,9 @@ class UserToAdminView(GenericAPIView):
 
 class SendEmailTestView(GenericAPIView):
     permission_classes = (AllowAny,)
+
+    def get_serializer(self):
+        return None
 
     def get(self, *args, **kwargs):
        template = get_template('test_email.html')
