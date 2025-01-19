@@ -1,10 +1,18 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+
 UserModel = get_user_model()
+
+
 class ChatRoomModel(models.Model):
     class Meta:
         db_table = 'chat_room'
+
     name = models.CharField(max_length=50)
+    is_privet = models.BooleanField(default=False)
+    users = models.ManyToManyField(UserModel, related_name='chat_rooms')
+    # users = models.ManyToManyField(UserModel, related_name='chat_rooms', blank=True)
+
 
     def __str__(self):
         return self.name
